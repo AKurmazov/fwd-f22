@@ -93,59 +93,13 @@
 <div class="container px-4 py-5" id="contacts">
   <h1 class="display-5 fw-bold">Contacts</h1>
   <div class="col-lg-6">
-    <p class="lead mb-4">You can contact me on Telegram and LinkedIn</p>
+    <p class="lead mb-4">You can contact me on GitHub and Instagram</p>
     <a class="btn btn-primary" style="background-color: #3b5998;" href="https://github.com/AKurmazov" role="button"><i class="fab fa-github"></i></a>
     <a class="btn btn-primary" style="background-color: #3b5998;" href="https://www.instagram.com/_kurmazov/" role="button"><i class="fab fa-instagram"></i></a>
   </div>
 </div>
 
-<!-- JQuery Simple Websocket -->
-<script type="text/javascript">
-  const SYMBOLS = ['AAPL', 'BAC', 'KO', 'CNK', 'NEE', 'TAL', 'TTWO', 'VZ', 'SPCE', 'V', ];
-
-  const API_KEY = "";  // Use your private token. https://finnhub.io/
-  const socket = new WebSocket('wss://ws.finnhub.io?token=' + API_KEY);
-
-  // Init stocks
-  const stocksContainer = document.getElementById('stocks-container');
-  SYMBOLS.forEach(symbol => {
-    const stockItem = document.createElement('div')
-    stockItem.id = symbol
-    stockItem.className = "w-25 p-2"
-
-    const stockItemLabel = document.createElement('div')
-    stockItemLabel.className = "d-inline-block"
-    stockItemLabel.style.width = '50px'
-    stockItemLabel.innerText = symbol
-
-    const stockItemValue = document.createElement('div')
-    stockItemValue.innerText = ''
-    stockItemValue.className = "d-inline-block"
-
-    stockItem.appendChild(stockItemLabel)
-    stockItem.appendChild(stockItemValue)
-    stocksContainer.appendChild(stockItem)
-  });
-
-  // Subscribe to stocks
-  socket.addEventListener('open', function (event) {
-    SYMBOLS.forEach(element => {
-      socket.send(JSON.stringify({'type':'subscribe', 'symbol': element}));
-    });
-  });
-
-  socket.addEventListener('message', function (event) {
-    jsonData = JSON.parse(event.data);
-
-    if (jsonData.type == 'trade') {
-      jsonData.data.forEach(tradeItem => {
-        const stockItemNode = document.getElementById(tradeItem.s)
-        const stockItemValueNode = stockItemNode.querySelector('div > div:last-of-type')
-        stockItemValueNode.innerText = tradeItem.p
-      });
-    }
-  });
-</script>
+<script src="src/index.js"></script>
 
 </body>
 </html>
