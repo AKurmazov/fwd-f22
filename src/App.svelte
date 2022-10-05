@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
 
   const SYMBOLS: Array<string> = ['AAPL', 'BAC', 'KO', 'CNK', 'NEE', 'TAL', 'TTWO', 'VZ', 'SPCE', 'V', ];
-  const API_KEY: string = 'c8rdafiad3i8tv0k57n0';  // Use your private token. https://finnhub.io/
+  const API_KEY: string = '';  // Use your private token. https://finnhub.io/
 
   const socket: WebSocket = new WebSocket('wss://ws.finnhub.io?token=' + API_KEY);
 
