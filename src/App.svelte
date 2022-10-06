@@ -1,10 +1,21 @@
 <script type="ts">
   import { onMount } from 'svelte';
 
-  const SYMBOLS: Array<string> = ['AAPL', 'BAC', 'KO', 'CNK', 'NEE', 'TAL', 'TTWO', 'VZ', 'SPCE', 'V', ];
   const API_KEY: string = '';  // Use your private token. https://finnhub.io/
-
   const socket: WebSocket = new WebSocket('wss://ws.finnhub.io?token=' + API_KEY);
+
+  let symbols: { [name: string]: number } =  {
+    'AAPL': 0,
+    'BAC': 0,
+    'KO': 0,
+    'CNK': 0,
+    'NEE': 0,
+    'TAL': 0,
+    'TTWO': 0,
+    'VZ': 0,
+    'SPCE': 0,
+    'V': 0,
+  };
 
   interface TradesData {
       type: string;
@@ -17,64 +28,22 @@
   }
 
   onMount(() => {
-    // Init stocks
-    const stocksContainer: HTMLElement | null = document.getElementById('stocks-container');
-    console.log(stocksContainer);
-    if (stocksContainer) {
-        SYMBOLS.forEach(symbol => {
-            const stockItem: HTMLElement = document.createElement('div');
-            stockItem.id = symbol;
-            stockItem.className = 'w-25 p-2';
-        
-            const stockItemLabel: HTMLElement = document.createElement('div');
-            stockItemLabel.className = 'd-inline-block';
-            stockItemLabel.style.width = '50px';
-            stockItemLabel.innerText = symbol;
-        
-            const stockItemValue: HTMLElement = document.createElement('div');
-            stockItemValue.innerText = '';
-            stockItemValue.className = 'd-inline-block';
-        
-            stockItem.appendChild(stockItemLabel);
-            stockItem.appendChild(stockItemValue);
-            stocksContainer.appendChild(stockItem);
-        });
-        
-        // Subscribe to stocks
-        socket.addEventListener('open', function (_) {
-            SYMBOLS.forEach(function (element: string) {
-                socket.send(JSON.stringify({'type': 'subscribe', 'symbol': element}));
-            });
-        });
-        
-        socket.addEventListener('message', function (event) {
-            const jsonData: TradesData = JSON.parse(event.data);
-        
-            if (jsonData.type == 'trade') {
-                jsonData.data.forEach(function (tradeItem: TradeItem) {
-                    const stockItemNode: HTMLElement | null = (
-                        document.getElementById(tradeItem.s)
-                    );
-                    if (!stockItemNode) {
-                        console.debug('Could not find the stock item node: ', tradeItem.s);
-                        return;
-                    }
-        
-                    const stockItemValueNode: HTMLElement | null = (
-                        stockItemNode.querySelector('div > div:last-of-type')
-                    );
-                    if (!stockItemValueNode) {
-                        console.debug('Could not find the stock item value node');
-                        return;
-                    }
-        
-                    stockItemValueNode.innerText = String(tradeItem.p);
-                });
-            }
-        });
-    }
-  });
+    socket.addEventListener('open', () => {
+      Object.keys(symbols).forEach(function (element: string) {
+        socket.send(JSON.stringify({'type': 'subscribe', 'symbol': element}));
+      });
+    });
 
+    socket.addEventListener('message', function (event) {
+      const jsonData: TradesData = JSON.parse(event.data);
+  
+      if (jsonData.type == 'trade') {
+        jsonData.data.forEach(function (tradeItem: TradeItem) {
+          symbols[tradeItem.s] = tradeItem.p;
+        });
+      }
+    });
+  });
 </script>
 
 <main>
@@ -93,17 +62,24 @@
   
   <div class="container px-4 py-5" id="about">
     <h1 class="display-5 fw-bold">About</h1>
-    <div class="col-lg-6">
+    <div class="col-lg-12">
       <p class="lead mb-4">Hello! My name is Alexander, and I am a Software Engineer :)</p>
     </div>
   </div>
   
   <div class="container px-4 py-5" id="stocks">
     <h1 class="display-5 fw-bold">Stocks</h1>
-    <div class="col-lg-6">
+    <div class="col-lg-12">
       <p class="lead mb-4">I have these stocks in my portfolio, perhaps it is handy to show 'em here</p>
     </div>
-    <div class="d-flex align-content-start flex-wrap" id="stocks-container"></div>
+    <div class="d-flex align-content-start flex-wrap" id="stocks-container">
+      {#each Object.keys(symbols) as symbol}
+        <div id="{ symbol }" class="w-25 p-2">
+          <div class="d-inline-block symbol-label">{ symbol }</div>
+          <div class="d-inline-block">{ symbols[symbol] } $</div>
+        </div>
+      {/each}
+    </div>
   </div>
   
   <div class="container px-4 py-5" id="education">
@@ -144,7 +120,7 @@
   
   <div class="container px-4 py-5" id="contacts">
     <h1 class="display-5 fw-bold">Contacts</h1>
-    <div class="col-lg-6">
+    <div class="col-lg-12">
       <p class="lead mb-4">You can contact me on GitHub and Instagram</p>
       <a class="btn btn-primary" style="background-color: #3b5998;" href="https://github.com/AKurmazov" role="button"><i class="fab fa-github"></i></a>
       <a class="btn btn-primary" style="background-color: #3b5998;" href="https://www.instagram.com/_kurmazov/" role="button"><i class="fab fa-instagram"></i></a>
@@ -155,5 +131,9 @@
 <style>
   main {
     text-align: left;
+  }
+
+  div.symbol-label {
+    width: 50px;
   }
 </style>
