@@ -1,50 +1,50 @@
 <script type="ts">
-import { onMount } from 'svelte';
+    import { onMount } from 'svelte';
 
-const API_KEY: string = '';  // Use your private token. https://finnhub.io/
+    const API_KEY: string = '';  // Use your private token. https://finnhub.io/
 
-let symbols: { [name: string]: number } =  {
-    'AAPL': 0,
-    'BAC': 0,
-    'KO': 0,
-    'CNK': 0,
-    'NEE': 0,
-    'TAL': 0,
-    'TTWO': 0,
-    'VZ': 0,
-    'SPCE': 0,
-    'V': 0,
-};
+    let symbols: { [name: string]: number } =  {
+        'AAPL': 0,
+        'BAC': 0,
+        'KO': 0,
+        'CNK': 0,
+        'NEE': 0,
+        'TAL': 0,
+        'TTWO': 0,
+        'VZ': 0,
+        'SPCE': 0,
+        'V': 0,
+    };
 
-interface TradesData {
-    type: string;
-    data: Array<TradeItem>;
-}
-
-interface TradeItem {
-    s: string;
-    p: number;
-}
-
-onMount(() => {
-    const socket: WebSocket = new WebSocket('wss://ws.finnhub.io?token=' + API_KEY);
-
-    socket.addEventListener('open', () => {
-    Object.keys(symbols).forEach(function (element: string) {
-        socket.send(JSON.stringify({'type': 'subscribe', 'symbol': element}));
-    });
-    });
-
-    socket.addEventListener('message', function (event) {
-    const jsonData: TradesData = JSON.parse(event.data);
-
-    if (jsonData.type == 'trade') {
-        jsonData.data.forEach(function (tradeItem: TradeItem) {
-        symbols[tradeItem.s] = tradeItem.p;
-        });
+    interface TradesData {
+        type: string;
+        data: Array<TradeItem>;
     }
+
+    interface TradeItem {
+        s: string;
+        p: number;
+    }
+
+    onMount(() => {
+        const socket: WebSocket = new WebSocket('wss://ws.finnhub.io?token=' + API_KEY);
+
+        socket.addEventListener('open', () => {
+        Object.keys(symbols).forEach(function (element: string) {
+            socket.send(JSON.stringify({'type': 'subscribe', 'symbol': element}));
+        });
+        });
+
+        socket.addEventListener('message', function (event) {
+        const jsonData: TradesData = JSON.parse(event.data);
+
+        if (jsonData.type == 'trade') {
+            jsonData.data.forEach(function (tradeItem: TradeItem) {
+            symbols[tradeItem.s] = tradeItem.p;
+            });
+        }
+        });
     });
-});
 </script>
 
 <main>
