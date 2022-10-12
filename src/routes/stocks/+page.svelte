@@ -1,7 +1,7 @@
 <script type="ts">
     import { onMount } from 'svelte';
 
-    const API_KEY: string = '';  // Use your private token. https://finnhub.io/
+    const API_KEY: string = import.meta.env.VITE_API_KEY;
 
     let symbols: { [name: string]: number } =  {
         'AAPL': 0,
