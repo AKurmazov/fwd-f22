@@ -1,11 +1,11 @@
 {
   "node_modules/@sveltejs/kit/src/runtime/client/start.js": {
-    "file": "_app/immutable/start-58197d65.js",
+    "file": "_app/immutable/start-08ee81e5.js",
     "src": "node_modules/@sveltejs/kit/src/runtime/client/start.js",
     "isEntry": true,
     "imports": [
       "_index-e4bef2a8.js",
-      "_singletons-43028307.js"
+      "_singletons-62df02ad.js"
     ],
     "dynamicImports": [
       ".svelte-kit/generated/nodes/0.js",
@@ -29,12 +29,12 @@
     ]
   },
   "node_modules/@sveltejs/kit/src/runtime/components/error.svelte": {
-    "file": "_app/immutable/components/error.svelte-e39473b3.js",
+    "file": "_app/immutable/components/error.svelte-27756cb2.js",
     "src": "node_modules/@sveltejs/kit/src/runtime/components/error.svelte",
     "isEntry": true,
     "imports": [
       "_index-e4bef2a8.js",
-      "_singletons-43028307.js"
+      "_singletons-62df02ad.js"
     ]
   },
   "src/routes/+page.svelte": {
@@ -70,7 +70,7 @@
     ]
   },
   "src/routes/stocks/+page.svelte": {
-    "file": "_app/immutable/components/pages/stocks/_page.svelte-c77803c4.js",
+    "file": "_app/immutable/components/pages/stocks/_page.svelte-f37a1dc6.js",
     "src": "src/routes/stocks/+page.svelte",
     "isEntry": true,
     "imports": [
@@ -88,8 +88,8 @@
       "__layout-8d2a742b.js"
     ]
   },
-  "_singletons-43028307.js": {
-    "file": "_app/immutable/chunks/singletons-43028307.js",
+  "_singletons-62df02ad.js": {
+    "file": "_app/immutable/chunks/singletons-62df02ad.js",
     "imports": [
       "_index-e4bef2a8.js"
     ]
@@ -110,7 +110,7 @@
     ]
   },
   ".svelte-kit/generated/nodes/1.js": {
-    "file": "_app/immutable/chunks/1-85bf52ba.js",
+    "file": "_app/immutable/chunks/1-02859c95.js",
     "src": ".svelte-kit/generated/nodes/1.js",
     "isDynamicEntry": true,
     "imports": [
@@ -150,7 +150,7 @@
     ]
   },
   ".svelte-kit/generated/nodes/6.js": {
-    "file": "_app/immutable/chunks/6-59a424c0.js",
+    "file": "_app/immutable/chunks/6-2d5b4b0f.js",
     "src": ".svelte-kit/generated/nodes/6.js",
     "isDynamicEntry": true,
     "imports": [
