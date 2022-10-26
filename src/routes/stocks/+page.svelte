@@ -1,6 +1,7 @@
 <script type="ts">
     import { onMount } from 'svelte';
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const API_KEY: string = import.meta.env.VITE_API_KEY;
 
     let symbols: { [name: string]: number } =  {
@@ -35,8 +36,8 @@
         });
         });
 
-        socket.addEventListener('message', function (event) {
-        const jsonData: TradesData = JSON.parse(event.data);
+        socket.addEventListener('message', function (event: { data: string }) {
+        const jsonData: TradesData = JSON.parse(event.data) as TradesData;
 
         if (jsonData.type == 'trade') {
             jsonData.data.forEach(function (tradeItem: TradeItem) {
